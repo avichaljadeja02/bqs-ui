@@ -49,32 +49,32 @@ const PlayerTable = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Player Name</th> {/* Moved "Player Name" to the first column */}
-              <th>Year</th>
-              <th>Round</th>
-              <th>Pick</th>
-              <th>Team</th>
-              <th>Position</th>
-              <th>School</th>
-              <th>Type</th>
-              <th>State</th>
-              <th>Signed</th>
-              <th>Bonus</th>
-            </tr>
-          </thead>
-          <tbody>
-            {players.map((player, index) => (
-              <tr key={index}>
-                {player.map((value, innerIndex) => (
-                  <td key={innerIndex}>{value}</td>
-                ))}
+        <><p>Results found: {players.length}</p><table>
+            <thead>
+              <tr>
+                <th>Player Name</th> {/* Moved "Player Name" to the first column */}
+                <th>Year</th>
+                <th>Round</th>
+                <th>Pick</th>
+                <th>Team</th>
+                <th>Position</th>
+                <th>School</th>
+                <th>Type</th>
+                <th>State</th>
+                <th>Signed</th>
+                <th>Bonus</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {players.map((player, index) => (
+                <tr key={index}>
+                  {player.map((value, innerIndex) => (
+                    <td key={innerIndex}>{value}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table></>
       )}
     </div>
   );
