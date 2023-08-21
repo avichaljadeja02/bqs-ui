@@ -49,7 +49,8 @@ const PlayerTable = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <><p>Results found: {players.length}</p><table>
+        <><p>Results found: {players.length}</p>
+          <table>
             <thead>
               <tr>
                 <th>Player Name</th> {/* Moved "Player Name" to the first column */}
