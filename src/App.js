@@ -27,7 +27,7 @@ const PlayerTable = () => {
 
   return (
     <div className="container">
-      <h1>Player Search</h1>
+      <h1>Baseball player searcher</h1>
       <form onSubmit={handleSearchSubmit}>
         <input
           type="text"
