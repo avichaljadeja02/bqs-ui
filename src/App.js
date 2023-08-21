@@ -53,11 +53,11 @@ const PlayerTable = () => {
           <table>
             <thead>
               <tr>
-                <th>Player Name</th> {/* Moved "Player Name" to the first column */}
                 <th>Year</th>
                 <th>Round</th>
                 <th>Pick</th>
                 <th>Team</th>
+                <th>Player Name</th>
                 <th>Position</th>
                 <th>School</th>
                 <th>Type</th>
