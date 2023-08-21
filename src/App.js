@@ -12,7 +12,7 @@ const PlayerTable = () => {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
   
-    const apiUrl = 'http://127.0.0.1:5000/api/search';
+    const apiUrl = 'https://baseball-query-searcher.onrender.com/api/search';
     const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}`;
   
     try {
