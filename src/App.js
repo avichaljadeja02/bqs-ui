@@ -9,6 +9,7 @@ const PlayerTable = () => {
   const [playersPerPage, setPlayersPerPage] = useState(10);
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [total, setTotal] = useState(1);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -52,13 +53,13 @@ const PlayerTable = () => {
     const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}&page=${page}`;
 
     try {
-      // Show the loading indicator
       setLoading(true);
 
       const response = await fetch(searchUrl);
       const data = await response.json();
       console.log(data)
-      setPlayers(data)
+      setPlayers(data.data)
+      setTotal(data.total_pages)
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -124,17 +125,25 @@ const PlayerTable = () => {
             </tbody>
           </table>
           <div className="pagination-buttons">
+            {players.length >= playersPerPage && (
+              <button className="pagination-button next-button" onClick={(e) => handleSearchSubmit(e, currentPage + 1)}>
+                Next Page
+                <img src="https://cdn-icons-png.flaticon.com/512/44/44567.png" width={20} height={20} alt="Previous Page" />
+              </button>
+            )}
             {currentPage !== 1 && (
-              <button className="pagination-button" onClick={(e) => handleSearchSubmit(e, currentPage - 1)}>
+              <button className="pagination-button previous-button" onClick={(e) => handleSearchSubmit(e, currentPage - 1)}>
+             <img src="https://cdn-icons-png.flaticon.com/512/44/44897.png" width={20} height={20} alt="Next Page" />
                 Previous Page
               </button>
             )}
-            {players.length >= playersPerPage && (
-              <button className="pagination-button" onClick={(e) => handleSearchSubmit(e, currentPage + 1)}>
-                Next Page
-              </button>
-            )}
+
           </div>
+          {players.length > 0 && (
+            <div className="page-info">
+              {currentPage}/{total}
+            </div>
+          )}
         </>
       )}
     </div>

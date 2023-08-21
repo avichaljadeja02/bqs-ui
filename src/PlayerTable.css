@@ -67,6 +67,8 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
   }
   
   .pagination-button:hover {
@@ -76,3 +78,12 @@
   th {
     margin: 10px;
   }
+  .next-button img {
+    margin-left: 5px; /* Add some spacing between text and image */
+  }
+
+  .previous_button img{
+    margin-right: 5px;
+  }
+
+  
