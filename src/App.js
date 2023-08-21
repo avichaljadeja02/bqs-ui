@@ -4,6 +4,7 @@ import '../src/PlayerTable.css';
 const PlayerTable = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -11,19 +12,27 @@ const PlayerTable = () => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-  
+
     const apiUrl = 'https://baseball-query-searcher.onrender.com/api/search';
     const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}`;
-  
+
     try {
+      // Show the loading indicator
+      setLoading(true);
+
       const response = await fetch(searchUrl);
       const data = await response.json();
+
+      // Update the state with the fetched data
       setPlayers(data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      // Hide the loading indicator, whether the request succeeds or fails
+      setLoading(false);
     }
   };
-  
+
 
   return (
     <div className="container">
@@ -37,33 +46,36 @@ const PlayerTable = () => {
         />
         <button type="submit">Search</button>
       </form>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Player Name</th> {/* Moved "Player Name" to the first column */}
-            <th>Year</th>
-            <th>Round</th>
-            <th>Pick</th>
-            <th>Team</th>
-            <th>Position</th>
-            <th>School</th>
-            <th>Type</th>
-            <th>State</th>
-            <th>Signed</th>
-            <th>Bonus</th>
-          </tr>
-        </thead>
-        <tbody>
-          {players.map((player, index) => (
-            <tr key={index}>
-              {player.map((value, innerIndex) => (
-                <td key={innerIndex}>{value}</td>
-              ))}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Player Name</th> {/* Moved "Player Name" to the first column */}
+              <th>Year</th>
+              <th>Round</th>
+              <th>Pick</th>
+              <th>Team</th>
+              <th>Position</th>
+              <th>School</th>
+              <th>Type</th>
+              <th>State</th>
+              <th>Signed</th>
+              <th>Bonus</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {players.map((player, index) => (
+              <tr key={index}>
+                {player.map((value, innerIndex) => (
+                  <td key={innerIndex}>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
