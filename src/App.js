@@ -5,16 +5,18 @@ const PlayerTable = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [playersPerPage, setPlayersPerPage] = useState(10);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchSubmit = async (e) => {
+  const handleSearchSubmit = async (e, page = 1) => {
+    console.log("HEREEEE")
     e.preventDefault();
-
     const apiUrl = 'https://baseball-query-searcher.onrender.com/api/search';
-    const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}`;
+    const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}&page=${page}`;
 
     try {
       // Show the loading indicator
@@ -22,17 +24,15 @@ const PlayerTable = () => {
 
       const response = await fetch(searchUrl);
       const data = await response.json();
-
-      // Update the state with the fetched data
-      setPlayers(data);
+      console.log(data)
+      setPlayers(data)
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      // Hide the loading indicator, whether the request succeeds or fails
       setLoading(false);
     }
   };
-
 
   return (
     <div className="container">
@@ -49,7 +49,8 @@ const PlayerTable = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <><p>Results found: {players.length}</p>
+        <>
+          <p>{players.length === 0 ? `No results found :(` : ''}</p>
           <table>
             <thead>
               <tr>
@@ -65,8 +66,7 @@ const PlayerTable = () => {
                 <th>Signed</th>
                 <th>Bonus</th>
               </tr>
-            </thead>
-            <tbody>
+            </thead>            <tbody>
               {players.map((player, index) => (
                 <tr key={index}>
                   {player.map((value, innerIndex) => (
@@ -75,10 +75,23 @@ const PlayerTable = () => {
                 </tr>
               ))}
             </tbody>
-          </table></>
+          </table>
+          <div className="pagination-buttons">
+            {currentPage !== 1 && (
+              <button className="pagination-button" onClick={(e) => handleSearchSubmit(e, currentPage - 1)}>
+                Previous Page
+              </button>
+            )}
+            {players.length >= playersPerPage && (
+              <button className="pagination-button" onClick={(e) => handleSearchSubmit(e, currentPage + 1)}>
+                Next Page
+              </button>
+            )}
+          </div>
+        </>
       )}
     </div>
-  );
+  )
 };
 
 export default PlayerTable;
