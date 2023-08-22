@@ -77,7 +77,7 @@ const PlayerTable = () => {
 
   return (
     <div className="container">
-    <h1>PitchPerfect: Tracking Players' Performance</h1>
+    <h1>Pitch Perfect: Assistant for your best draft pick</h1>
       <form onSubmit={handleSearchSubmit}>
         <input
           type="text"
