@@ -10,6 +10,8 @@ const PlayerTable = () => {
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
   const [total, setTotal] = useState(1);
+  const [totalPlayer, setTotalPlayers] = useState(1);
+
   const [accordionOpen, setAccordionOpen] = useState(true); // Initially open
 
   const toggleAccordion = () => {
@@ -52,7 +54,6 @@ const PlayerTable = () => {
 
 
   const handleSearchSubmit = async (e, page = 1) => {
-    console.log("HEREEEE")
     e.preventDefault();
     const apiUrl = 'https://baseball-query-searcher.onrender.com/api/search';
     const searchUrl = `${apiUrl}?q=${encodeURIComponent(searchQuery)}&page=${page}`;
@@ -65,6 +66,7 @@ const PlayerTable = () => {
       console.log(data)
       setPlayers(data.data)
       setTotal(data.total_pages)
+      setTotalPlayers(data.total_results)
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -75,7 +77,7 @@ const PlayerTable = () => {
 
   return (
     <div className="container">
-    <h1>Baseball player searcher</h1>
+    <h1>PitchPerfect: Tracking Players' Performance</h1>
       <form onSubmit={handleSearchSubmit}>
         <input
           type="text"
@@ -93,10 +95,10 @@ const PlayerTable = () => {
           {players && players.length === 0 ? (
                 <div> 
                   <h3>Some general instructions are:</h3>
-                  <p>If you would like to search on a particular field, try to specify that field</p>
+                  <p>If you would like to search on a particular field, try to specify that field eg. Players drafted in the first round</p>
                   <p>If no field is found, the search would be performed on all columns</p>
-                  <p>The results are paginated, so if you would like more results (and there are more), you can click on the next page</p>
-                  <p>The columns can be sorted by clicking on the column heading</p>
+                  <p>The results are paginated, so if you would like more results (and there are more), you can click on the next page button</p>
+                  <p>The columns can be sorted by clicking on the column header</p>
                 </div>
           ): (
           <table>
@@ -156,7 +158,12 @@ const PlayerTable = () => {
           </div>
           {players && players.length > 0 && (
             <div className="page-info">
-              {currentPage}/{total}
+              Page: {currentPage}/{total}
+            </div>
+          )}
+          {players && players.length > 0 && (
+            <div className="page-info">
+              Total results found : {totalPlayer}
             </div>
           )}
         </>
