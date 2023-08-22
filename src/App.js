@@ -10,6 +10,11 @@ const PlayerTable = () => {
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
   const [total, setTotal] = useState(1);
+  const [accordionOpen, setAccordionOpen] = useState(true); // Initially open
+
+  const toggleAccordion = () => {
+    setAccordionOpen(!accordionOpen);
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -70,7 +75,7 @@ const PlayerTable = () => {
 
   return (
     <div className="container">
-      <h1>Baseball player searcher</h1>
+    <h1>Baseball player searcher</h1>
       <form onSubmit={handleSearchSubmit}>
         <input
           type="text"
@@ -84,7 +89,16 @@ const PlayerTable = () => {
         <div>Loading...</div>
       ) : (
         <>
-          <p>{players.length === 0 ? `No results found :(` : ''}</p>
+          <p>{players && players.length === 0 ? `No results found :(` : ''}</p>
+          {players && players.length === 0 ? (
+                <div> 
+                  <h3>Some general instructions are:</h3>
+                  <p>If you would like to search on a particular field, try to specify that field</p>
+                  <p>If no field is found, the search would be performed on all columns</p>
+                  <p>The results are paginated, so if you would like more results (and there are more), you can click on the next page</p>
+                  <p>The columns can be sorted by clicking on the column heading</p>
+                </div>
+          ): (
           <table>
             <thead>
               <tr>
@@ -96,7 +110,7 @@ const PlayerTable = () => {
               </tr>
             </thead>
             <tbody>
-              {players
+              {players && players
                 .slice()
                 .sort((a, b) => {
                   if (sortBy) {
@@ -124,8 +138,9 @@ const PlayerTable = () => {
                 ))}
             </tbody>
           </table>
+          )}
           <div className="pagination-buttons">
-            {players.length >= playersPerPage && (
+            {players && players.length >= playersPerPage && (
               <button className="pagination-button next-button" onClick={(e) => handleSearchSubmit(e, currentPage + 1)}>
                 Next Page
                 <img src="https://cdn-icons-png.flaticon.com/512/44/44567.png" width={20} height={20} alt="Previous Page" />
@@ -133,13 +148,13 @@ const PlayerTable = () => {
             )}
             {currentPage !== 1 && (
               <button className="pagination-button previous-button" onClick={(e) => handleSearchSubmit(e, currentPage - 1)}>
-             <img src="https://cdn-icons-png.flaticon.com/512/44/44897.png" width={20} height={20} alt="Next Page" />
+                <img src="https://cdn-icons-png.flaticon.com/512/44/44897.png" width={20} height={20} alt="Next Page" />
                 Previous Page
               </button>
             )}
 
           </div>
-          {players.length > 0 && (
+          {players && players.length > 0 && (
             <div className="page-info">
               {currentPage}/{total}
             </div>
