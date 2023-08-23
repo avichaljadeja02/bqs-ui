@@ -29,6 +29,16 @@ const PlayerTable = () => {
     return '';
   };
 
+
+  const highlightSearchQuery = (text) => {
+    if (searchQuery && typeof text === 'string') {
+      const regex = new RegExp(searchQuery, 'gi');
+      return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
+    }
+    console.log(text)
+    return text;
+  };
+  
   const handleColumnSort = (columnName) => {
     if (sortBy === columnName) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -134,8 +144,8 @@ const PlayerTable = () => {
                 .map((player, index) => (
                   <tr key={index}>
                     {player.map((value, innerIndex) => (
-                      <td key={innerIndex}>{value}</td>
-                    ))}
+                    <td key={innerIndex} dangerouslySetInnerHTML={{ __html: highlightSearchQuery(value) }} />
+                  ))}
                   </tr>
                 ))}
             </tbody>
