@@ -92,7 +92,7 @@ const PlayerTable = () => {
       ) : (
         <>
           <p>{players && players.length === 0 ? `No results found :(` : ''}</p>
-          {players && players.length === 0 ? (
+          {players && players.length === 0 && (
                 <div> 
                   <h3>Some general instructions are:</h3>
                   <p>If you would like to search on a particular field, try to specify that field eg. Players drafted in the first round</p>
@@ -100,7 +100,7 @@ const PlayerTable = () => {
                   <p>The results are paginated, so if you would like more results (and there are more), you can click on the next page button</p>
                   <p>The columns can be sorted by clicking on the column header</p>
                 </div>
-          ): (
+          )}
           <table>
             <thead>
               <tr>
@@ -140,7 +140,6 @@ const PlayerTable = () => {
                 ))}
             </tbody>
           </table>
-          )}
           <div className="pagination-buttons">
             {players && players.length >= playersPerPage && (
               <button className="pagination-button next-button" onClick={(e) => handleSearchSubmit(e, currentPage + 1)}>
@@ -169,7 +168,6 @@ const PlayerTable = () => {
         </>
       )}
     </div>
-  )
-};
+)};
 
 export default PlayerTable;
